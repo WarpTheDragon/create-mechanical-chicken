@@ -5,7 +5,6 @@ import com.oierbravo.create_mechanical_chicken.ModLang;
 import com.oierbravo.create_mechanical_chicken.ModRegistration;
 import com.oierbravo.create_mechanical_chicken.infrastructure.config.MConfigs;
 import com.oierbravo.mechanicals.utility.MechanicalConfigUtils;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,9 +28,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,7 @@ public class MechanicalChickenCategory implements IRecipeCategory<MechanicalChic
                 .setBackground(slotDrawable, -1, -1);
 
         if (recipe.fluid != null) {
-            input.addIngredients(NeoForgeTypes.FLUID_STACK, recipe.fluid.getMatchingFluidStacks())
+            input.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.fluid().getFluids()))
                     .addRichTooltipCallback(MechanicalChickenCategory::addFluidAmountTooltip);
         }
 
@@ -107,22 +108,22 @@ public class MechanicalChickenCategory implements IRecipeCategory<MechanicalChic
         AllGuiTextures.JEI_ARROW.render(guiGraphics, 110, 16); //Output arrow
         chicken.draw(guiGraphics, 82, 35);
     }
-    private static FluidIngredient getFluidIngredientFromConfig(){
-        FluidIngredient fluidIngredient = FluidIngredient.EMPTY;
+    private static SizedFluidIngredient getFluidIngredientFromConfig(){
+        SizedFluidIngredient fluidIngredient = SizedFluidIngredient.of(FluidStack.EMPTY);
         final String fluidResourceRaw = MConfigs.server().mechanicalChicken.requiredFluid.get();
         int configuredAmount = MConfigs.server().mechanicalChicken.requiredFluidAmount.get();
         if(fluidResourceRaw.startsWith("#")){
             ResourceLocation fluidTag = ResourceLocation.tryParse(fluidResourceRaw.replace("#",""));
             assert fluidTag != null;
-            return FluidIngredient.fromTag(FluidTags.create(fluidTag),configuredAmount);
+            return SizedFluidIngredient.of(FluidTags.create(fluidTag),configuredAmount);
         }
         final ResourceLocation desiredFluid = ResourceLocation.parse(fluidResourceRaw);
 
         if (BuiltInRegistries.FLUID.containsKey(desiredFluid)) {
-            fluidIngredient = FluidIngredient.fromFluid(BuiltInRegistries.FLUID.get(desiredFluid), configuredAmount);
+            fluidIngredient = SizedFluidIngredient.of(BuiltInRegistries.FLUID.get(desiredFluid), configuredAmount);
         } else {
             CreateMechanicalChicken.LOGGER.error("Unknown fluid '{}' in config, using default '{}' instead", fluidResourceRaw, "minecraft:water");
-            fluidIngredient = FluidIngredient.fromFluid(Fluids.WATER, configuredAmount);
+            fluidIngredient = SizedFluidIngredient.of(Fluids.WATER, configuredAmount);
         }
         return fluidIngredient;
     }
@@ -132,13 +133,13 @@ public class MechanicalChickenCategory implements IRecipeCategory<MechanicalChic
         int configuredOutputAmount = MConfigs.server().mechanicalChicken.outputAmount.get();
 
         recipes.add(new MechanicalChickenRecipe(
-                MechanicalConfigUtils.readFluidIngredient(MConfigs.server().mechanicalChicken.requiredFluid.get(),MConfigs.server().mechanicalChicken.requiredFluidAmount.get(), FluidIngredient.fromFluid(Fluids.WATER,configuredOutputAmount)),
+                SizedFluidIngredient.of(MechanicalConfigUtils.readFluidStack(MConfigs.server().mechanicalChicken.requiredFluid.get(),MConfigs.server().mechanicalChicken.requiredFluidAmount.get(),"minecraft:water" )),
                 new ItemStack(Items.EGG,configuredOutputAmount)
         ));
         return recipes;
     }
 
-    public record MechanicalChickenRecipe(@Nullable FluidIngredient fluid, ItemStack itemStack) {
+    public record MechanicalChickenRecipe(@Nullable SizedFluidIngredient fluid, ItemStack itemStack) {
 
     }
 }

@@ -5,7 +5,7 @@
       "tag": "c:seeds"
     },
     {
-      "type": "fluid_stack",
+      "type": "neoforge:single",
       "amount": 100,
       "fluid": "minecraft:water"
     }

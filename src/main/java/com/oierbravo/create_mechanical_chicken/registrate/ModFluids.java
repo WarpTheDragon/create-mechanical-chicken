@@ -2,21 +2,12 @@ package com.oierbravo.create_mechanical_chicken.registrate;
 
 import com.oierbravo.create_mechanical_chicken.CreateMechanicalChicken;
 import com.oierbravo.mechanicals.register.fluid.MechanicalSolidRenderedPlaceableFluidType;
-import com.simibubi.create.AllFluids;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
-import net.createmod.catnip.theme.Color;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidStack;
-import org.joml.Vector3f;
 
-import java.util.function.Supplier;
+import static com.oierbravo.create_mechanical_chicken.CreateMechanicalChicken.commonFluidTag;
+import static com.oierbravo.create_mechanical_chicken.CreateMechanicalChicken.commonItemTag;
 
 public class ModFluids {
     public static final CreateRegistrate REGISTRATE = CreateMechanicalChicken.registrate();
@@ -31,10 +22,10 @@ public class ModFluids {
                             .tickRate(25)
                             .slopeFindDistance(3)
                             .explosionResistance(100f))
-                    .tag(AllTags.commonFluidTag("chicken_nutrient"))
+                    .tag(commonFluidTag("chicken_nutrient"))
                     .source(BaseFlowingFluid.Source::new) // TODO: remove when Registrate fixes FluidBuilder
                     .bucket()
-                    .tag(AllTags.commonItemTag("buckets/chicken_nutrient"))
+                    .tag(commonItemTag("buckets/chicken_nutrient"))
                     .build()
                     .register();
     public static void register() {}

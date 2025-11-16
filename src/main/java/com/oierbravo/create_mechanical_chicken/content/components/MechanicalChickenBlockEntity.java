@@ -9,7 +9,6 @@ import com.oierbravo.mechanicals.foundation.blockEntity.behaviour.DynamicCycleBe
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,6 +33,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +46,7 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
     private DynamicCycleBehavior cycleBehaviour;
     public SmartFluidTankBehaviour inputTank;
     private boolean contentsChanged;
-    private FluidIngredient requiredFluidIngredient;
+    private SizedFluidIngredient requiredFluidIngredient;
 
     public final ItemStackHandler outputInventory = new ItemStackHandler(1) {
         @Override
@@ -60,7 +60,7 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
     public MechanicalChickenBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
         verifyConfig(CreateMechanicalChicken.LOGGER);
-        inputTank.getPrimaryHandler().setValidator(requiredFluidIngredient);
+        inputTank.getPrimaryHandler().setValidator(requiredFluidIngredient.ingredient());
     }
 
     @Override
@@ -184,12 +184,12 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
         return this.cycleBehaviour.getProgressPercent();
     }
 
-    public FluidIngredient getFluidIngredient(){
+    public SizedFluidIngredient getFluidIngredient(){
         int amount = MConfigs.server().mechanicalChicken.requiredFluidAmount.get();
         String name = MConfigs.server().mechanicalChicken.requiredFluid.get();
         if(name.startsWith("#"))
-            return FluidIngredient.fromTag(FluidTags.create(ResourceLocation.parse(name.replace("#",""))), amount);
-       return FluidIngredient.fromFluid(getRequiredFluid(),amount);
+            return SizedFluidIngredient.of(FluidTags.create(ResourceLocation.parse(name.replace("#",""))), amount);
+       return SizedFluidIngredient.of(getRequiredFluid(),amount);
     }
 
     public Fluid getRequiredFluid(){
@@ -211,16 +211,16 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
             if(fluidResourceRaw.startsWith("#")){
                 ResourceLocation fluidTag = ResourceLocation.tryParse(fluidResourceRaw.replace("#",""));
                 assert fluidTag != null;
-                requiredFluidIngredient = FluidIngredient.fromTag(FluidTags.create(fluidTag),configuredAmount);
+                requiredFluidIngredient = SizedFluidIngredient.of(FluidTags.create(fluidTag),configuredAmount);
                 return;
             }
             final ResourceLocation desiredFluid = ResourceLocation.parse(fluidResourceRaw);
 
             if (BuiltInRegistries.FLUID.containsKey(desiredFluid)) {
-                requiredFluidIngredient = FluidIngredient.fromFluid(BuiltInRegistries.FLUID.get(desiredFluid), configuredAmount);
+                requiredFluidIngredient = SizedFluidIngredient.of(BuiltInRegistries.FLUID.get(desiredFluid), configuredAmount);
             } else {
                 logger.error("Unknown fluid '{}' in config, using default '{}' instead", fluidResourceRaw, "minecraft:water");
-                requiredFluidIngredient = FluidIngredient.fromFluid(Fluids.WATER, configuredAmount);
+                requiredFluidIngredient = SizedFluidIngredient.of(Fluids.WATER, configuredAmount);
             }
         }
     }

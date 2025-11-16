@@ -5,7 +5,9 @@ import com.oierbravo.create_mechanical_chicken.content.components.MechanicalChic
 import com.oierbravo.create_mechanical_chicken.infrastructure.config.MConfigs;
 import com.oierbravo.create_mechanical_chicken.infrastructure.data.ModDataGen;
 import com.oierbravo.create_mechanical_chicken.ponders.ModPonderPlugin;
-import com.oierbravo.create_mechanical_chicken.registrate.*;
+import com.oierbravo.create_mechanical_chicken.registrate.ModCreativeTabs;
+import com.oierbravo.create_mechanical_chicken.registrate.ModFluids;
+import com.oierbravo.create_mechanical_chicken.registrate.ModPartials;
 import com.oierbravo.mechanicals.utility.RegistrateLangBuilder;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -13,6 +15,11 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.ponder.foundation.PonderIndex;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
@@ -93,5 +100,13 @@ public class CreateMechanicalChicken
 
     public static void registerLangCustom(String id, String text){
         registrate().addRawLang(id, text);
+    }
+
+    public static TagKey<Item> commonItemTag(String path) {
+        return TagKey.create(BuiltInRegistries.ITEM.key(), ResourceLocation.fromNamespaceAndPath("c", path));
+    }
+
+    public static TagKey<Fluid> commonFluidTag(String path) {
+        return TagKey.create(BuiltInRegistries.FLUID.key(), ResourceLocation.fromNamespaceAndPath("c", path));
     }
 }
