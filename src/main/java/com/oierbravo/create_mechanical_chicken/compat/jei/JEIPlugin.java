@@ -171,7 +171,7 @@ public class JEIPlugin implements IModPlugin {
 
             recipes.add(new MechanicalChickenRecipe(
                     getFluidIngredientFromConfig(),
-                    new ItemStack(Items.EGG,configuredOutputAmount)
+                    new ItemStack(Items.TURTLE_EGG,configuredOutputAmount)
             ));
             return recipes;
         }
