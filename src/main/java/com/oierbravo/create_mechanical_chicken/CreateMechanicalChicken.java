@@ -29,7 +29,7 @@ public class CreateMechanicalChicken
 {
     // Directly reference a slf4j logger
     public static final String MODID = "create_mechanical_chicken";
-    public static final String DISPLAY_NAME = "Create Mechanical Chicken";
+    public static final String DISPLAY_NAME = "Create Mechanical Chickene";
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
     static {
@@ -74,8 +74,8 @@ public class CreateMechanicalChicken
         registerLangCustom("block.create_mechanical_chicken.mechanical_chicken.tooltip", "MECHANICAL Chicken");
         registerLangCustom("block.create_mechanical_chicken.mechanical_chicken.tooltip.summary", "Chicken _Egg_ generator.");
 
-        registerLang("ponder.mechanical_chicken.header", "Generates chicken eggs");
-        registerLang("ponder.mechanical_chicken.text_1", "The Mechanical Chicken uses rotational force and an specific fluid to generate eggs");
+        registerLang("ponder.mechanical_chicken.header", "Generates turtle eggs");
+        registerLang("ponder.mechanical_chicken.text_1", "The Mechanical Chicken uses rotational force and a specific fluid to generate eggs");
         registerLang("ponder.mechanical_chicken.text_2", "Its powered from the bottom");
         registerLang("ponder.mechanical_chicken.text_3", "Fluid input can ONLY go from the FRONT side");
         registerLang("ponder.mechanical_chicken.text_4", "Egg output is ONLY located on the BACK side");
