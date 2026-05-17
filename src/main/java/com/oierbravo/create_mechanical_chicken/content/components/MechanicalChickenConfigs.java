@@ -29,7 +29,7 @@ public class MechanicalChickenConfigs {
 
         REQUIRED_FLUID_AMOUNT = COMMON_BUILDER
                 .comment("Required fluid amount")
-                .defineInRange("requiredFluidAmount", 100, 0, Integer.MAX_VALUE);
+                .defineInRange("requiredFluidAmount", 0, 0, Integer.MAX_VALUE);
 
         OUTPUT_AMOUNT = COMMON_BUILDER
                 .comment("Output amount")
