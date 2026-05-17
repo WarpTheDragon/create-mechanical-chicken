@@ -38,7 +38,7 @@ public class MechanicalChickenScenes {
 
 
         scene.overlay().showOutlineWithText(chickenSelection, 60)
-                .text("The Mechanical Chicken uses rotational force and an specific fluid to generate eggs")
+                .text("The Mechanical Chicken uses rotational force and an specific fluid to generate turtle eggs")
                 .pointAt(util.vector().blockSurface(chickenPos, Direction.WEST)
                         //.add(-.5, .4, 0)
                         )
@@ -97,7 +97,7 @@ public class MechanicalChickenScenes {
         scene.world().showSection(depotSelection,Direction.EAST);
         scene.world().showSection(funnelSelection,Direction.DOWN);
 
-        ItemStack eggStack = new ItemStack(Items.EGG);
+        ItemStack eggStack = new ItemStack(Items.TURTLE_EGG);
 
         scene.world().modifyBlockEntity(chickenPos, MechanicalChickenBlockEntity.class,
                 ms -> ms.outputInventory.setStackInSlot(0, eggStack));
