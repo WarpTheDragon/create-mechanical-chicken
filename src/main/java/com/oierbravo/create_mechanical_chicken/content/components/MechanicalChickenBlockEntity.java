@@ -146,7 +146,7 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
 
         if(inputTank.getPrimaryHandler().getFluidAmount() < MechanicalChickenConfigs.REQUIRED_FLUID_AMOUNT.get())
             return false;
-        if(ItemStack.EMPTY != outputInventory.insertItem(0, new ItemStack(Items.EGG,MechanicalChickenConfigs.OUTPUT_AMOUNT.get()),true))
+        if(ItemStack.EMPTY != outputInventory.insertItem(0, new ItemStack(Items.TURTLE_EGG,MechanicalChickenConfigs.OUTPUT_AMOUNT.get()),true))
             return false;
 
 
@@ -154,7 +154,7 @@ public class MechanicalChickenBlockEntity extends KineticBlockEntity implements 
             return true;
 
         inputTank.getPrimaryHandler().drain(MechanicalChickenConfigs.REQUIRED_FLUID_AMOUNT.get(), IFluidHandler.FluidAction.EXECUTE);
-        outputInventory.insertItem(0, new ItemStack(Items.EGG,MechanicalChickenConfigs.OUTPUT_AMOUNT.get()),false);
+        outputInventory.insertItem(0, new ItemStack(Items.TURTLE_EGG,MechanicalChickenConfigs.OUTPUT_AMOUNT.get()),false);
 
         return true;
     }
